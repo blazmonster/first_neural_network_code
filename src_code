@@ -1,1 +1,27 @@
+import numpy as np 
 
+def sigmoid(z):
+    return 1/(1+np.exp(-0.01*z))
+def sig_derivatives(x):
+    return sigmoid(x)*(1-sigmoid(x))
+
+training_inputs= np.array([[0,0,1],[1,1,1],[1,0,1],[0,1,1]])
+training_outputs=np.array([[0],[1],[0],[0]])
+np.random.seed(1)
+synaptic_weights= 2*np.random.random((3,1))-1
+#print(synaptic_weights)
+for iteration in range(50000):
+    input_layer=training_inputs
+    outputs=sigmoid(np.dot(input_layer,synaptic_weights))
+    error=training_outputs-outputs
+    correction=error*sig_derivatives(outputs)
+    synaptic_weights+=np.dot(input_layer.T,correction)
+
+adj_output=outputs
+for i in range(len(adj_output)):
+    if(adj_output[i]>0.9):
+        adj_output[i]=1.0
+    elif(adj_output[i]<0.1):
+        adj_output[i]=0.0
+print("trained_output")    
+print(adj_output)
